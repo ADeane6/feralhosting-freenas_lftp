@@ -77,7 +77,8 @@ else
     lftp -p 22 -u "$login","$pass" sftp://"$host" << EOF
     set sftp:auto-confirm yes
     set mirror:use-pget-n 5
-    mirror -c -P5 "$remote_dir" "$temp_dir"
+    set net:limit-total-rate 20971520:0
+    mirror -c -P5 --newer-than=now-15min "$remote_dir" "$temp_dir"
     quit
 EOF
     rm -f "$lock_file"
